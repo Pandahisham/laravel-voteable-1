@@ -1,17 +1,14 @@
 <?php
 
-    namespace Tshafer\Voteable;
+namespace Tshafer\Voteable;
 
-    use Tshafer\ServiceProvider\ServiceProvider as BaseProvider;
+use Tshafer\ServiceProvider\ServiceProvider as BaseProvider;
 
     /**
-     * Class ServiceProvider
-     *
-     * @package Tshafer\Voteable
+     * Class ServiceProvider.
      */
     class ServiceProvider extends BaseProvider
     {
-
         /**
          * @var string
          */
@@ -22,7 +19,7 @@
          */
         public function boot()
         {
-            $this->setup( __DIR__ )
+            $this->setup(__DIR__)
                  ->publishMigrations();
         }
     }
