@@ -1,13 +1,12 @@
 <?php
 
-    namespace Tshafer\Voteable\Contracts;
+namespace Tshafer\Voteable\Contracts;
 
-    /**
+/**
      * Interface Voteable.
      */
     interface Voteable
     {
-
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphMany
          */

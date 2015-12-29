@@ -1,8 +1,8 @@
 <?php
 
-    namespace Tshafer\Voteable\Models;
+namespace Tshafer\Voteable\Models;
 
-    use Carbon\Carbon;
+use Carbon\Carbon;
     use Illuminate\Database\Eloquent\Model;
 
     /**
@@ -10,11 +10,10 @@
      */
     class Vote extends Model
     {
-
         /**
          * @var array
          */
-        protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+        protected $guarded = ['id', 'created_at', 'updated_at'];
 
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -29,10 +28,10 @@
          *
          * @return mixed
          */
-        public static function sum( Model $voteable )
+        public static function sum(Model $voteable)
         {
             return $voteable->votes()
-                            ->sum( 'value' );
+                            ->sum('value');
         }
 
         /**
@@ -40,7 +39,7 @@
          *
          * @return mixed
          */
-        public static function count( Model $voteable )
+        public static function count(Model $voteable)
         {
             return $voteable->votes()
                             ->count();
@@ -52,10 +51,10 @@
          *
          * @return mixed
          */
-        public static function countUps( Model $voteable, $value = 1 )
+        public static function countUps(Model $voteable, $value = 1)
         {
             return $voteable->votes()
-                            ->where( 'value', $value )
+                            ->where('value', $value)
                             ->count();
         }
 
@@ -65,10 +64,10 @@
          *
          * @return mixed
          */
-        public static function countDowns( Model $voteable, $value = - 1 )
+        public static function countDowns(Model $voteable, $value = -1)
         {
             return $voteable->votes()
-                            ->where( 'value', $value )
+                            ->where('value', $value)
                             ->count();
         }
 
@@ -79,20 +78,20 @@
          *
          * @return mixed
          */
-        public static function countByDate( Model $voteable, $from, $to = null )
+        public static function countByDate(Model $voteable, $from, $to = null)
         {
             $query = $voteable->votes();
 
-            if ( ! empty( $to )) {
-                $range = [ new Carbon( $from ), new Carbon( $to ) ];
+            if (!empty($to)) {
+                $range = [new Carbon($from), new Carbon($to)];
             } else {
                 $range = [
-                    ( new Carbon( $from ) )->startOfDay(),
-                    ( new Carbon( $to ) )->endOfDay(),
+                    ( new Carbon($from) )->startOfDay(),
+                    ( new Carbon($to) )->endOfDay(),
                 ];
             }
 
-            return $query->whereBetween( 'created_at', $range )
+            return $query->whereBetween('created_at', $range)
                          ->count();
         }
 
@@ -101,9 +100,9 @@
          *
          * @return bool
          */
-        public static function up( Model $voteable )
+        public static function up(Model $voteable)
         {
-            return static::cast( $voteable, 1 );
+            return static::cast($voteable, 1);
         }
 
         /**
@@ -111,17 +110,17 @@
          *
          * @return bool
          */
-        public static function down( Model $voteable )
+        public static function down(Model $voteable)
         {
-            return static::cast( $voteable, - 1 );
+            return static::cast($voteable, -1);
         }
 
         /**
          * @param $value
          */
-        public function setValueAttribute( $value )
+        public function setValueAttribute($value)
         {
-            $this->attributes[ 'value' ] = ( $value == - 1 ) ? - 1 : 1;
+            $this->attributes[ 'value' ] = ($value == -1) ? -1 : 1;
         }
 
         /**
@@ -130,17 +129,17 @@
          *
          * @return bool
          */
-        protected function cast( Model $voteable, $value = 1 )
+        protected function cast(Model $voteable, $value = 1)
         {
-            if ( ! $voteable->exists) {
+            if (!$voteable->exists) {
                 return false;
             }
 
-            $vote        = new static();
+            $vote = new static();
             $vote->value = $value;
 
             return $vote->voteable()
-                        ->associate( $voteable )
+                        ->associate($voteable)
                         ->save();
         }
     }
